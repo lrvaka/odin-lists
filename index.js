@@ -123,6 +123,66 @@ const linkedListFactory = () => {
     return msg;
   }
 
+  function insertAt(index, value) {
+    let tmp = this.head;
+    let count = 0;
+
+    while (tmp) {
+      if (count === index) {
+        return (tmp.value = value);
+      }
+      tmp = tmp.next;
+      count++;
+    }
+
+    return console.error("A node at this index does not exist");
+  }
+
+  function removeAt(index) {
+    let tmp = this.head;
+    let count = 0;
+
+    if (index === 0 && this.tail === this.head) {
+      this.head = tmp.next;
+      this.tail = this.head;
+      this.size--;
+      return;
+    }
+
+    if (index === 0) {
+      this.head = tmp.next;
+      this.size--;
+      return;
+    }
+
+    if (index === this.size - 1) {
+      while (tmp.next) {
+        tmp = tmp.next;
+        if (!tmp.next.next) {
+          tmp.next = null;
+          this.tail = tmp;
+          this.size--;
+          return;
+        }
+      }
+    }
+
+    let prev;
+    while (tmp) {
+      if (count === index - 1) prev = tmp;
+      if (count === index) {
+        prev.next = tmp.next;
+        tmp = null;
+        this.size--;
+        return;
+      }
+      tmp = tmp.next;
+      count++;
+    }
+
+    return console.error("A node at this index does not exist");
+  }
+
   return {
     head,
     append,
@@ -135,6 +195,8 @@ const linkedListFactory = () => {
     contains,
     find,
     toString,
+    insertAt,
+    removeAt,
   };
 };
 
@@ -142,8 +204,12 @@ const linkedList = linkedListFactory();
 
 linkedList.append(1);
 linkedList.append(2);
-linkedList.prepend(3);
-linkedList.prepend(3);
-linkedList.prepend(3);
+linkedList.append(3);
+linkedList.append(4);
+linkedList.append(5);
 
-console.log(linkedList.toString());
+
+linkedList.removeAt(0);
+linkedList.removeAt(3);
+
+console.log(linkedList.head);
