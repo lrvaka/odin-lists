@@ -1,13 +1,9 @@
-const linkedListFactory = () => {
-  let head = null;
-  let tail = null;
-  let size = 0;
+const nodeFactory = (value = null, next = null) => {
+  return { value, next };
+};
 
-  const nodeFactory = (value = null, next = null) => {
-    return { value, next };
-  };
-
-  function prepend(value) {
+const linkedListProto = {
+  prepend(value) {
     if (!this.head) {
       this.head = nodeFactory(value, null);
       this.tail = this.head;
@@ -16,9 +12,9 @@ const linkedListFactory = () => {
     }
 
     this.size++;
-  }
+  },
 
-  function append(value) {
+  append(value) {
     if (!this.head) {
       this.head = nodeFactory(value, null);
       this.tail = this.head;
@@ -31,17 +27,17 @@ const linkedListFactory = () => {
       this.tail = tmp.next;
     }
     this.size++;
-  }
+  },
 
-  function traverse() {
+  traverse() {
     let tmp = this.head;
     while (tmp) {
       console.log(tmp);
       tmp = tmp.next;
     }
-  }
+  },
 
-  function at(index) {
+  at(index) {
     let count = 0;
     let tmp = this.head;
 
@@ -55,9 +51,9 @@ const linkedListFactory = () => {
     if (count != index) return "No node exists at this index";
 
     return tmp;
-  }
+  },
 
-  function pop() {
+  pop() {
     let tmp = this.head;
 
     if (this.size === 1) {
@@ -83,9 +79,9 @@ const linkedListFactory = () => {
         break;
       }
     }
-  }
+  },
 
-  function contains(value) {
+  contains(value) {
     let tmp = this.head;
     while (tmp) {
       if (tmp.value === value) {
@@ -94,9 +90,9 @@ const linkedListFactory = () => {
       tmp = tmp.next;
     }
     return false;
-  }
+  },
 
-  function find(value) {
+  find(value) {
     let tmp = this.head;
     let count = 0;
     while (tmp) {
@@ -106,11 +102,12 @@ const linkedListFactory = () => {
       tmp = tmp.next;
       count++;
     }
-  }
+  },
 
-  function toString() {
+  toString() {
     let tmp = this.head;
     let msg = "";
+    let emptyMsg = "No nodes available";
     while (tmp) {
       if (!tmp.next) {
         msg += tmp.value + " -> null";
@@ -120,10 +117,10 @@ const linkedListFactory = () => {
 
       tmp = tmp.next;
     }
-    return msg;
-  }
+    return msg ? msg : emptyMsg;
+  },
 
-  function insertAt(index, value) {
+  insertAt(index, value) {
     let tmp = this.head;
     let count = 0;
 
@@ -136,9 +133,9 @@ const linkedListFactory = () => {
     }
 
     return console.error("A node at this index does not exist");
-  }
+  },
 
-  function removeAt(index) {
+  removeAt(index) {
     let tmp = this.head;
     let count = 0;
 
@@ -181,35 +178,19 @@ const linkedListFactory = () => {
     }
 
     return console.error("A node at this index does not exist");
-  }
+  },
+};
 
-  return {
-    head,
-    append,
-    prepend,
-    traverse,
-    size,
-    tail,
-    at,
-    pop,
-    contains,
-    find,
-    toString,
-    insertAt,
-    removeAt,
-  };
+const linkedListFactory = () => {
+  let head = null;
+  let tail = null;
+  let size = 0;
+
+  return Object.assign(Object.create(linkedListProto), { head, tail, size });
 };
 
 const linkedList = linkedListFactory();
 
 linkedList.append(1);
-linkedList.append(2);
-linkedList.append(3);
-linkedList.append(4);
-linkedList.append(5);
 
-
-linkedList.removeAt(0);
-linkedList.removeAt(3);
-
-console.log(linkedList.head);
+console.log(linkedList);
